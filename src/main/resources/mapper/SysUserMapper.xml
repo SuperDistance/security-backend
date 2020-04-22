@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platform.security.dao.SysUserDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysUser">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="user_name" property="userName" />
+        <result column="password" property="password" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="enabled" property="enabled" />
+        <result column="account_non_expired" property="accountNonExpired" />
+        <result column="account_non_locked" property="accountNonLocked" />
+        <result column="credentials_non_expired" property="credentialsNonExpired" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <!--根据用户名查询用户-->
+    <select id="selectByName" resultMap="SysUserMapper">
+        select * from sys_user where account = #{userName};
+    </select>
+
+    <select id="queryAllByLimit" resultMap="SysUserMapper">
+        select
+          id, account, user_name, password, last_login_time, enabled, account_non_expired, account_non_locked, credentials_non_expired, create_time, update_time, create_user, update_user
+        from sys_user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update sys_user
+        <set>
+            <if test="account != null and account != ''">
+                account = #{account},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="accountNonExpired != null">
+                account_non_expired = #{accountNonExpired},
+            </if>
+            <if test="accountNonLocked != null">
+                account_non_locked = #{accountNonLocked},
+            </if>
+            <if test="credentialsNonExpired != null">
+                credentials_non_expired = #{credentialsNonExpired},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

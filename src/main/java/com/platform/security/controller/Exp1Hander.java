@@ -1,6 +1,6 @@
 package com.platform.security.controller;
 
-import com.platform.security.utils.CsoftSecurityUtil;
+import com.platform.security.common.utils.CsoftSecurityUtil;
 import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.config.SimpleStringDigesterConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

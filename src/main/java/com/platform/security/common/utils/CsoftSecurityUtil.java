@@ -1,4 +1,8 @@
-package com.platform.security.utils;
+/*
+ * Copyright (c) 2020
+ */
+
+package com.platform.security.common.utils;
 
 
 import com.alibaba.fastjson.JSON;
