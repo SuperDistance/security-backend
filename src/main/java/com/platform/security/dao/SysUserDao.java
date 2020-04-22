@@ -1,5 +1,6 @@
 package com.platform.security.dao;
 
+import com.platform.security.entity.SysPermission;
 import com.platform.security.entity.SysUser;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,5 +21,13 @@ public interface SysUserDao extends BaseMapper<SysUser> {
 
     SysUser selectByName(String userName);
 
-    int update(SysUser sysUser);
+    int updateUser(SysUser sysUser);
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    SysPermission queryById(Integer id);
 }

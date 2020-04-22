@@ -3,13 +3,47 @@
 <mapper namespace="com.platform.security.dao.SysPermissionDao">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysPermission">
+    <resultMap id="SysPermissionMap" type="com.platform.security.entity.SysPermission">
         <id column="id" property="id" />
         <result column="permission_code" property="permissionCode" />
         <result column="permission_name" property="permissionName" />
     </resultMap>
 
-    <select id="selectListByUser" resultMap="SysPermissionMapper">
+    <!--查询单个-->
+    <select id="queryById" resultMap="SysPermissionMap">
+        select
+            id, permission_code, permission_name
+        from sys_permission
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SysPermissionMap">
+        select
+            id, permission_code, permission_name
+        from sys_permission
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SysPermissionMap">
+        select
+        id, permission_code, permission_name
+        from sys_permission
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="permissionCode != null and permissionCode != ''">
+                and permission_code = #{permissionCode}
+            </if>
+            <if test="permissionName != null and permissionName != ''">
+                and permission_name = #{permissionName}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectListByUser" resultMap="SysPermissionMap">
         SELECT
             p.*
         FROM
@@ -23,5 +57,14 @@
                 LEFT JOIN sys_permission AS p
                           ON p.id = rp.permission_id
         WHERE u.id = #{userId}
+    </select>
+    <select id="selectListByPath" resultMap="SysPermissionMap">
+        SELECT
+            pe.*
+        FROM
+            sys_permission pe
+                LEFT JOIN sys_request_path_permission_relation re ON re.permission_id = pe.id
+                LEFT JOIN sys_request_path pa ON pa.id = re.url_id
+        WHERE pa.url = #{path}
     </select>
 </mapper>

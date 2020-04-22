@@ -1,5 +1,6 @@
 package com.platform.security.service;
 
+import com.platform.security.entity.SysPermission;
 import com.platform.security.entity.SysUser;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -31,5 +32,13 @@ public interface SysUserService extends IService<SysUser> {
      * @param sysUser 实例对象
      * @return 实例对象
      */
-    SysUser update(SysUser sysUser);
+    SysUser updateUser(SysUser sysUser);
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    SysPermission queryById(Integer id);
 }

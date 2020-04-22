@@ -21,4 +21,20 @@ public interface SysPermissionDao extends BaseMapper<SysPermission> {
      * @return
      */
     List<SysPermission> selectListByUser(Integer userId);
+
+    /**
+     * 查询具体某个接口的权限
+     *
+     * @param path 接口路径
+     * @return
+     */
+    List<SysPermission> selectListByPath(String path);
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    SysPermission queryById(Integer id);
 }

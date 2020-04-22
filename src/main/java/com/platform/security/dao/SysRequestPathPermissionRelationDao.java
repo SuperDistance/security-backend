@@ -2,6 +2,9 @@ package com.platform.security.dao;
 
 import com.platform.security.entity.SysRequestPathPermissionRelation;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>

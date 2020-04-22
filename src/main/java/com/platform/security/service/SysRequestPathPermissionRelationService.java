@@ -1,7 +1,10 @@
 package com.platform.security.service;
 
+import com.platform.security.entity.SysPermission;
 import com.platform.security.entity.SysRequestPathPermissionRelation;
 import com.baomidou.mybatisplus.service.IService;
+
+import java.util.List;
 
 /**
  * <p>

@@ -6,6 +6,9 @@ import com.platform.security.service.SysRequestPathPermissionRelationService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * <p>
  * 路径权限关联表 服务实现类
@@ -16,5 +19,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysRequestPathPermissionRelationServiceImpl extends ServiceImpl<SysRequestPathPermissionRelationDao, SysRequestPathPermissionRelation> implements SysRequestPathPermissionRelationService {
-
 }

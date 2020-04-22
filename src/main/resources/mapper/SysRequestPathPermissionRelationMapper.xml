@@ -4,10 +4,11 @@
 
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysRequestPathPermissionRelation">
+    <resultMap id="SysRequestPathPermissionRelationMap" type="com.platform.security.entity.SysRequestPathPermissionRelation">
         <result column="id" property="id" />
         <result column="url_id" property="urlId" />
         <result column="permission_id" property="permissionId" />
     </resultMap>
+
 
 </mapper>

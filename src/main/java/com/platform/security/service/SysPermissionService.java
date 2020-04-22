@@ -14,6 +14,15 @@ import java.util.List;
  * @since 2020-04-22
  */
 public interface SysPermissionService extends IService<SysPermission> {
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    SysPermission queryById(Integer id);
+
     /**
      * 查询用户的权限列表
      *
@@ -22,4 +31,11 @@ public interface SysPermissionService extends IService<SysPermission> {
      */
     List<SysPermission> selectListByUser(Integer userId);
 
+    /**
+     * 查询具体某个接口的权限
+     *
+     * @param path
+     * @return
+     */
+    List<SysPermission> selectListByPath(String path);
 }

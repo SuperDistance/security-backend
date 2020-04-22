@@ -4,7 +4,7 @@
 
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysRole">
+    <resultMap id="SysRoleMap" type="com.platform.security.entity.SysRole">
         <id column="id" property="id" />
         <result column="role_name" property="roleName" />
         <result column="role_description" property="roleDescription" />

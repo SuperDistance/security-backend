@@ -4,7 +4,7 @@
 
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysRolePermissionRelation">
+    <resultMap id="SysRolePermissionRelationMap" type="com.platform.security.entity.SysRolePermissionRelation">
         <id column="id" property="id" />
         <result column="role_id" property="roleId" />
         <result column="permission_id" property="permissionId" />

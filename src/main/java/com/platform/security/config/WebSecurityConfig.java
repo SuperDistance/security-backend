@@ -5,17 +5,19 @@
  */
 package com.platform.security.config;
 
-import com.platform.security.config.handler.CustomizeAuthenticationEntrypoint;
+import com.platform.security.config.handler.*;
 import com.platform.security.config.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 /**
  *@program: security-backend
@@ -34,13 +36,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     *@Author: Tianshi Chen
     *@date: 4/22/2020
     */
+
+    @Autowired
+    CustomizeAuthenticationEntryPoint customizeAuthenticationEntrypoint;
+
+    @Autowired
+    CustomizeAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
+
+    @Autowired
+    CustomizeAuthenticationFailureHandler customizeAuthenticationFailureHandler;
+
+    @Autowired
+    CustomizeLogoutSuccessHandler customizeLogoutSuccessHandler;
+
+    @Autowired
+    CustomizeSessionInformationExpiredStrategy customizeSessionInformationExpiredStrategy;
+
+    @Autowired
+    CustomizeAccessDecisionManager customizeAccessDecisionManager;
+
+    @Autowired
+    CustomizeFilterInvocationSecurityMetadataSource customizeFilterInvocationSecurityMetadataSource;
+
+    @Autowired
+    private CustomizeAbstractSecurityInterceptor customizeAbstractSecurityInterceptor;
+
+    // offer an default encrypt method
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
-
-    @Autowired
-    CustomizeAuthenticationEntrypoint customizeAuthenticationEntrypoint;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -57,26 +87,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.cors().and().csrf().disable();
         httpSecurity.authorizeRequests().
-                antMatchers("/getUser").hasAuthority("query_user").
+                withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        // access decision manager added
+                        o.setAccessDecisionManager(customizeAccessDecisionManager);
+                        // security metadata source added: provide the list of url is valid
+                        o.setSecurityMetadataSource(customizeFilterInvocationSecurityMetadataSource);
+                        return o;
+                    }
+                }).
 
-                //异常处理(权限拒绝、登录失效等)
+                // exceptions dealing(eg. login refused, invalid)
                 and().exceptionHandling().
-                authenticationEntryPoint(customizeAuthenticationEntrypoint);// 匿名用户访问无权限资源时的异常处理
+                authenticationEntryPoint(customizeAuthenticationEntrypoint). // to deal with anonymous user's access to resources
 
+                // log in
+                and().formLogin().
+                    permitAll().
+                    successHandler(customizeAuthenticationSuccessHandler).
+                    failureHandler(customizeAuthenticationFailureHandler).
 
+                // log out
+                and().logout().
+                    permitAll().
+                    logoutSuccessHandler(customizeLogoutSuccessHandler).
+                    deleteCookies("JSESSIONID").
 
-    }
-    /**
-    *@Description: offer an default encrypt method
-    *@Param: []
-    *@return: org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-    *@Author: Tianshi Chen
-    *@date: 4/22/2020
-    */
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+                // session policy
+                and().sessionManagement().
+                        maximumSessions(1).
+                        expiredSessionStrategy(customizeSessionInformationExpiredStrategy);
+
+                httpSecurity.addFilterBefore(customizeAbstractSecurityInterceptor, FilterSecurityInterceptor.class);
     }
 
 

@@ -4,11 +4,44 @@
 
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysRequestPath">
+    <resultMap id="SysRequestPathMap" type="com.platform.security.entity.SysRequestPath">
         <id column="id" property="id" />
         <result column="url" property="url" />
         <result column="description" property="description" />
     </resultMap>
 
+    <!--查询单个-->
+    <select id="queryById" resultMap="SysRequestPathMap">
+        select
+            id, url, description
+        from sys_request_path
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SysRequestPathMap">
+        select
+            id, url, description
+        from sys_request_path
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SysRequestPathMap">
+        select
+        id, url, description
+        from sys_request_path
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="url != null and url != ''">
+                and url = #{url}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+        </where>
+    </select>
 
 </mapper>

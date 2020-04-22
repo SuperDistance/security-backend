@@ -1,5 +1,6 @@
 package com.platform.security.service.impl;
 
+import com.platform.security.entity.SysPermission;
 import com.platform.security.entity.SysUser;
 import com.platform.security.dao.SysUserDao;
 import com.platform.security.service.SysUserService;
@@ -33,8 +34,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
     }
 
     @Override
-    public SysUser update(SysUser sysUser) {
-        this.sysUserDao.update(sysUser);
+    public SysUser updateUser(SysUser sysUser) {
+        this.sysUserDao.updateUser(sysUser);
         return this.sysUserDao.selectById(sysUser.getId());
+    }
+
+    @Override
+    public SysPermission queryById(Integer id) {
+        return sysUserDao.queryById(id);
     }
 }

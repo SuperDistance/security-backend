@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SysPermissionService sysPermissionService;
 
-    public boolean verify (Integer x) {return x.equals(1);}
+    private boolean verify(Integer x) {return x.equals(1);}
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
