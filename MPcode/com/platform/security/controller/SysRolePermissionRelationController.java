@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 权限表 前端控制器
+ * 角色-权限关联关系表 前端控制器
  * </p>
  *
  * @author code maker
- * @since 2020-04-22
+ * @since 2020-04-23
  */
 @RestController
-@RequestMapping("/security/sysPermission")
-public class SysPermissionController {
+@RequestMapping("/security/sysRolePermissionRelation")
+public class SysRolePermissionRelationController {
 
 }
 

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (c) 2020
-  -->
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platform.security.dao.SysUserDao">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="SysUserMap" type="com.platform.security.entity.SysUser">
+    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysUser">
         <id column="id" property="id" />
         <result column="account" property="account" />
         <result column="user_name" property="userName" />
@@ -22,19 +18,5 @@
         <result column="create_user" property="createUser" />
         <result column="update_user" property="updateUser" />
     </resultMap>
-
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="SysUserMap">
-        select
-          id, account, user_name, password, last_login_time, enabled, account_non_expired, account_non_locked, credentials_non_expired, create_time, update_time, create_user, update_user
-        from sys_user
-        limit #{offset}, #{limit}
-    </select>
-
-
-    <!--根据用户名查询用户-->
-    <select id="selectByName" resultMap="SysUserMap">
-        select * from sys_user where account = #{userName};
-    </select>
 
 </mapper>

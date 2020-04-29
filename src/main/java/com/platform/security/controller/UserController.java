@@ -31,11 +31,12 @@ public class UserController {
 
     @GetMapping("/getUser")
     public JsonResult getUser() {
-        List<SysUser> users = sysUserService.queryAllByLimit(1, 100);
+        List<SysUser> users = sysUserService.list();
         return ResultTool.success(users);
     }
     @GetMapping("/test")
     public JsonResult test() {
-        return ResultTool.success("hello world");
+        List<SysUser> users = sysUserService.list();
+        return ResultTool.success(users);
     }
 }

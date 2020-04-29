@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) 2020
+ */
+
 package com.platform.security.dao;
 
 import com.platform.security.entity.SysPermission;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
 
@@ -11,11 +15,20 @@ import java.util.List;
  * </p>
  *
  * @author code maker
- * @since 2020-04-22
+ * @since 2020-04-23
  */
 public interface SysPermissionDao extends BaseMapper<SysPermission> {
     /**
-     * 查询用户的权限
+     * 查询多条数据
+     *
+     * @param offset 查询起始位置
+     * @param limit  查询条数
+     * @return 对象列表
+     */
+    List<SysPermission> queryAllByLimit(int offset, int limit);
+
+    /**
+     * 查询用户的权限列表
      *
      * @param userId
      * @return
@@ -25,16 +38,8 @@ public interface SysPermissionDao extends BaseMapper<SysPermission> {
     /**
      * 查询具体某个接口的权限
      *
-     * @param path 接口路径
+     * @param path
      * @return
      */
     List<SysPermission> selectListByPath(String path);
-
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
-    SysPermission queryById(Integer id);
 }

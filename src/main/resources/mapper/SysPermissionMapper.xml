@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2020
+  -->
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platform.security.dao.SysPermissionDao">
 
@@ -9,38 +13,12 @@
         <result column="permission_name" property="permissionName" />
     </resultMap>
 
-    <!--查询单个-->
-    <select id="queryById" resultMap="SysPermissionMap">
-        select
-            id, permission_code, permission_name
-        from sys_permission
-        where id = #{id}
-    </select>
-
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="SysPermissionMap">
         select
             id, permission_code, permission_name
         from sys_permission
         limit #{offset}, #{limit}
-    </select>
-
-    <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="SysPermissionMap">
-        select
-        id, permission_code, permission_name
-        from sys_permission
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="permissionCode != null and permissionCode != ''">
-                and permission_code = #{permissionCode}
-            </if>
-            <if test="permissionName != null and permissionName != ''">
-                and permission_name = #{permissionName}
-            </if>
-        </where>
     </select>
 
     <select id="selectListByUser" resultMap="SysPermissionMap">
@@ -58,6 +36,7 @@
                           ON p.id = rp.permission_id
         WHERE u.id = #{userId}
     </select>
+    <!--正则模糊匹配路径-->
     <select id="selectListByPath" resultMap="SysPermissionMap">
         SELECT
             pe.*
@@ -65,6 +44,7 @@
             sys_permission pe
                 LEFT JOIN sys_request_path_permission_relation re ON re.permission_id = pe.id
                 LEFT JOIN sys_request_path pa ON pa.id = re.url_id
-        WHERE pa.url = #{path}
+
+        WHERE #{path} REGEXP pa.url
     </select>
 </mapper>

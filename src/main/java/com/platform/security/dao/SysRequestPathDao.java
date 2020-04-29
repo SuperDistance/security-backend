@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) 2020
+ */
+
 package com.platform.security.dao;
 
 import com.platform.security.entity.SysRequestPath;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,18 +16,9 @@ import java.util.List;
  * </p>
  *
  * @author code maker
- * @since 2020-04-22
+ * @since 2020-04-23
  */
 public interface SysRequestPathDao extends BaseMapper<SysRequestPath> {
-
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
-    SysRequestPath queryById(Integer id);
-
     /**
      * 查询指定行数据
      *
@@ -32,4 +27,6 @@ public interface SysRequestPathDao extends BaseMapper<SysRequestPath> {
      * @return 对象列表
      */
     List<SysRequestPath> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+
 }

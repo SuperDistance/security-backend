@@ -1,7 +1,7 @@
 package com.platform.security.dao;
 
 import com.platform.security.entity.SysUserRoleRelation;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author code maker
- * @since 2020-04-22
+ * @since 2020-04-23
  */
 public interface SysUserRoleRelationDao extends BaseMapper<SysUserRoleRelation> {
 

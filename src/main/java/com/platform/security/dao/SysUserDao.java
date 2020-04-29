@@ -1,8 +1,11 @@
+/*
+ * Copyright (c) 2020
+ */
+
 package com.platform.security.dao;
 
-import com.platform.security.entity.SysPermission;
 import com.platform.security.entity.SysUser;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,21 +16,25 @@ import java.util.List;
  * </p>
  *
  * @author code maker
- * @since 2020-04-22
+ * @since 2020-04-23
  */
 public interface SysUserDao extends BaseMapper<SysUser> {
 
+    /**
+     * 查询指定行数据
+     *
+     * @param offset 查询起始位置
+     * @param limit  查询条数
+     * @return 对象列表
+     */
     List<SysUser> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
-    SysUser selectByName(String userName);
-
-    int updateUser(SysUser sysUser);
 
     /**
-     * 通过ID查询单条数据
+     * 根据用户名查询用户
      *
-     * @param id 主键
-     * @return 实例对象
+     * @param userName
+     * @return
      */
-    SysPermission queryById(Integer id);
+    SysUser selectByName(String userName);
 }

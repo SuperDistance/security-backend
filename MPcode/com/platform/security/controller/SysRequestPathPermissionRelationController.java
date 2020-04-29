@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author code maker
- * @since 2020-04-22
+ * @since 2020-04-23
  */
 @RestController
 @RequestMapping("/security/sysRequestPathPermissionRelation")

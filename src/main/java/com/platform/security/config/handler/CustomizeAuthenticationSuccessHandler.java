@@ -25,7 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  *@program: security-backend
@@ -42,10 +42,12 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SysUser sysUser = sysUserService.selectByName(userDetails.getUsername());
-        sysUser.setLastLoginTime(new Date());
-        sysUser.setUpdateTime(new Date());
+        sysUser.setLastLoginTime(LocalDateTime.now());
+        sysUser.setUpdateTime(LocalDateTime.now());
         sysUser.setUpdateUser(sysUser.getId());
-        sysUserService.updateUser(sysUser);
+        System.out.println(sysUser.toString());
+        sysUserService.updateById(sysUser);
+        System.out.println(sysUserService.toString());
         //此处还可以进行一些处理，比如登录成功之后可能需要返回给前台当前用户有哪些菜单权限，
         //进而前台动态的控制菜单的显示等，具体根据自己的业务需求进行扩展
 

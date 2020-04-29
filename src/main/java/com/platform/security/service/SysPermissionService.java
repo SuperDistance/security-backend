@@ -1,7 +1,7 @@
 package com.platform.security.service;
 
 import com.platform.security.entity.SysPermission;
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -11,17 +11,18 @@ import java.util.List;
  * </p>
  *
  * @author code maker
- * @since 2020-04-22
+ * @since 2020-04-23
  */
 public interface SysPermissionService extends IService<SysPermission> {
 
     /**
-     * 通过ID查询单条数据
+     * 查询多条数据
      *
-     * @param id 主键
-     * @return 实例对象
+     * @param offset 查询起始位置
+     * @param limit  查询条数
+     * @return 对象列表
      */
-    SysPermission queryById(Integer id);
+    List<SysPermission> queryAllByLimit(int offset, int limit);
 
     /**
      * 查询用户的权限列表
@@ -34,7 +35,7 @@ public interface SysPermissionService extends IService<SysPermission> {
     /**
      * 查询具体某个接口的权限
      *
-     * @param path
+     * @param path 需要支持reg
      * @return
      */
     List<SysPermission> selectListByPath(String path);

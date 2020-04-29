@@ -111,17 +111,22 @@
         <!-- Mybatis-plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatisplus-spring-boot-starter</artifactId>
-            <version>1.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
-            <version>2.1.9</version>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.3.1</version>
         </dependency>
         <!--JSON-->
         <dependency>
@@ -153,6 +158,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!--JWT-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
         </dependency>
     </dependencies>
 

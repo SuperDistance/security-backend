@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (c) 2020
-  -->
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platform.security.dao.SysRequestPathDao">
 
-
     <!-- 通用查询映射结果 -->
-    <resultMap id="SysRequestPathMap" type="com.platform.security.entity.SysRequestPath">
+    <resultMap id="BaseResultMap" type="com.platform.security.entity.SysRequestPath">
         <id column="id" property="id" />
         <result column="url" property="url" />
         <result column="description" property="description" />
     </resultMap>
-
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="SysRequestPathMap">
-        select
-            id, url, description
-        from sys_request_path
-        limit #{offset}, #{limit}
-    </select>
 
 </mapper>

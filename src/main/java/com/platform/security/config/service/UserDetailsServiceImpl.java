@@ -57,8 +57,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             grantedAuthorities.add(grantedAuthority);
         });
 
-        return new User(sysUser.getAccount(), sysUser.getPassword(), verify(sysUser.getEnabled()), verify(sysUser.getAccountNonExpired()),
-                verify(sysUser.getCredentialsNonExpired()), verify(sysUser.getAccountNonLocked()), grantedAuthorities);
+        return new User(sysUser.getAccount(), sysUser.getPassword(), sysUser.getEnabled(), sysUser.getAccountNonExpired(),
+                sysUser.getCredentialsNonExpired(), sysUser.getAccountNonLocked(), grantedAuthorities);
     }
 }
 
