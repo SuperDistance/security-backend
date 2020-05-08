@@ -35,7 +35,11 @@ public enum ResultCode {
     USER_ACCOUNT_USE_BY_OTHERS(2009, "account use by others"),
 
     /* 业务错误 */
-    NO_PERMISSION(3001, "have no access");
+    NO_PERMISSION(3001, "have no access"),
+    UPDATE_ERROR(3002, "internal update error"),
+    SAVE_ERROR(3002, "internal save error"),
+    DELETE_ERROR(3003, "internal delete error");
+
     private Integer code;
     private String message;
 

@@ -37,4 +37,9 @@
         select * from sys_user where account = #{userName};
     </select>
 
+    <!--根据用户名查询用户-->
+    <select id="selectByName" resultMap="SysUserMap">
+        select * from sys_user where account = #{userName};
+    </select>
+
 </mapper>

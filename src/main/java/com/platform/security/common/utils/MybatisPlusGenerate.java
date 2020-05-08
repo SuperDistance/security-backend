@@ -6,13 +6,13 @@
 
 package com.platform.security.common.utils;
 
-import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 /**
@@ -34,7 +34,7 @@ public class MybatisPlusGenerate {
         // =============================全局配置===============================
         mpg.setGlobalConfig(new GlobalConfig()
                 // 覆盖输出到xxx目录
-                .setFileOverride(false).setOutputDir("C:\\Users\\92351\\Documents\\GitHub\\security-backend\\src\\main\\java")
+                .setFileOverride(false).setOutputDir("C:\\Users\\92351\\Documents\\GitHub\\security-backend\\MPcode")
                 // 主键生成策略 生成BaseResultMap
                 .setIdType(IdType.AUTO).setBaseResultMap(true)
                 // 指定作者

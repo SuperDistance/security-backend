@@ -30,20 +30,21 @@ public class CustomizeAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
         // get the iterator
-        Iterator<ConfigAttribute> iterator = collection.iterator();
-        while (iterator.hasNext()) {
-            ConfigAttribute ca = iterator.next();
+        for (ConfigAttribute ca : collection) {
+            System.out.println("Config: " + ca);
             // the access want to have
             String needRole = ca.getAttribute();
+            System.out.println("needRole: " + needRole);
             // what rights does the user have
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority authority : authorities) {
+                System.out.println("GrantedAuthority: " + authority);
                 if (authority.getAuthority().equals(needRole)) {
                     return;
                 }
             }
-            throw new AccessDeniedException("No Access!");
         }
+        throw new AccessDeniedException("No Access!");
     }
 
     // with the configuration above, we support configAttributes

@@ -25,7 +25,6 @@ public interface SysUserService extends IService<SysUser> {
      */
     List<SysUser> queryAllByLimit(int offset, int limit);
 
-
     /**
      * 根据用户名查询用户
      *
@@ -33,4 +32,13 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     SysUser selectByName(String userName);
+
+    /**
+    *@Description: register user able to return error code
+    *@Param: [sysUser]
+    *@return: java.lang.int
+    *@Author: Tianshi Chen
+    *@date: 5/1/2020
+    */
+    int registerOrUpdateUser(SysUser sysUser, boolean isUpdate, boolean revisePassword, String newPassword, boolean isAdminister);
 }

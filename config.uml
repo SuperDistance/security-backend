@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.platform.security.config</OriginalElement>
+  <nodes>
+    <node x="0.0" y="576.0">com.platform.security.config.WebSecurityConfig</node>
+    <node x="0.0" y="0.0">com.platform.security.config.handler.CustomizeFilterInvocationSecurityMetadataSource</node>
+    <node x="225.0" y="576.0">com.platform.security.config.MybatisPlusConfig</node>
+    <node x="0.0" y="72.0">com.platform.security.config.handler.CustomizeUsernamePasswordAuthenticationFilter</node>
+    <node x="0.0" y="504.0">com.platform.security.config.service.UserDetailsServiceImpl</node>
+    <node x="265.0" y="504.0">com.platform.security.config.handler.JwtLoginConfigurer</node>
+    <node x="353.0" y="360.0">com.platform.security.config.handler.CustomizeAccessDecisionManager</node>
+    <node x="321.0" y="432.0">com.platform.security.config.handler.JwtAuthenticationTokenFilter</node>
+    <node x="0.0" y="360.0">com.platform.security.config.handler.CustomizeAuthenticationEntryPoint</node>
+    <node x="0.0" y="144.0">com.platform.security.config.handler.CustomizeAuthenticationFailureHandler</node>
+    <node x="0.0" y="432.0">com.platform.security.config.handler.CustomizeLogoutSuccessHandler</node>
+    <node x="0.0" y="288.0">com.platform.security.config.handler.CustomizeAbstractSecurityInterceptor</node>
+    <node x="0.0" y="216.0">com.platform.security.config.handler.CustomizeAuthenticationSuccessHandler</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="318.5" y="337.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -14,11 +14,24 @@ import java.io.Serializable;
  */
 public class SysRequestPathPermissionRelation implements Serializable {
 
+
+    public SysRequestPathPermissionRelation(Integer id, Integer urlId, Integer permissionId) {
+        setId(id);
+        setUrlId(urlId);
+        setPermissionId(permissionId);
+    }
+
+    public SysRequestPathPermissionRelation(Integer urlId, Integer permissionId) {
+        this.urlId = urlId;
+        this.permissionId = permissionId;
+    }
+
     private static final long serialVersionUID=1L;
 
     /**
      * 主键id
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -30,7 +43,6 @@ public class SysRequestPathPermissionRelation implements Serializable {
      * 权限id
      */
     private Integer permissionId;
-
 
     public Integer getId() {
         return id;

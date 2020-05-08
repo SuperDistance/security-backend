@@ -14,6 +14,19 @@ import java.io.Serializable;
  */
 public class SysRole implements Serializable {
 
+    public SysRole(int id, String roleName, String roleDescription, String roleCode) {
+        setId(id);
+        setRoleName(roleName);
+        setRoleDescription(roleDescription);
+        setRoleCode(roleCode);
+    }
+
+    public SysRole(String roleName, String roleDescription, String roleCode) {
+        setRoleName(roleName);
+        setRoleDescription(roleDescription);
+        setRoleCode(roleCode);
+    }
+
     private static final long serialVersionUID=1L;
 
     /**

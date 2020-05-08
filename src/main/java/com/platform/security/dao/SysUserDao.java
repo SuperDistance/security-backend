@@ -36,5 +36,5 @@ public interface SysUserDao extends BaseMapper<SysUser> {
      * @param userName
      * @return
      */
-    SysUser selectByName(String userName);
+    SysUser selectByName(@Param("userName") String userName);
 }

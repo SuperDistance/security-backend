@@ -14,6 +14,17 @@ import java.io.Serializable;
  */
 public class SysRolePermissionRelation implements Serializable {
 
+    public SysRolePermissionRelation(Integer id, Integer roleId, Integer permissionId) {
+        this.id = id;
+        this.roleId = roleId;
+        this.permissionId = permissionId;
+    }
+
+    public SysRolePermissionRelation(Integer roleId, Integer permissionId) {
+        this.roleId = roleId;
+        this.permissionId = permissionId;
+    }
+
     private static final long serialVersionUID=1L;
 
     /**
@@ -31,7 +42,6 @@ public class SysRolePermissionRelation implements Serializable {
      * 权限id
      */
     private Integer permissionId;
-
 
     public Integer getId() {
         return id;

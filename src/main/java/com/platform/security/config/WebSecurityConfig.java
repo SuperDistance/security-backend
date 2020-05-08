@@ -10,14 +10,28 @@ import com.platform.security.config.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.Header;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 /**
  *@program: security-backend
@@ -38,22 +52,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     */
 
     @Autowired
+    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    @Autowired
     CustomizeAuthenticationEntryPoint customizeAuthenticationEntrypoint;
+
+    @Autowired
+    CustomizeLogoutSuccessHandler customizeLogoutSuccessHandler;
+
+    @Autowired
+    CustomizeAccessDecisionManager customizeAccessDecisionManager;
 
     @Autowired
     CustomizeAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
 
     @Autowired
     CustomizeAuthenticationFailureHandler customizeAuthenticationFailureHandler;
-
-    @Autowired
-    CustomizeLogoutSuccessHandler customizeLogoutSuccessHandler;
-
-    @Autowired
-    CustomizeSessionInformationExpiredStrategy customizeSessionInformationExpiredStrategy;
-
-    @Autowired
-    CustomizeAccessDecisionManager customizeAccessDecisionManager;
 
     @Autowired
     CustomizeFilterInvocationSecurityMetadataSource customizeFilterInvocationSecurityMetadataSource;
@@ -75,7 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // configuration methods
-        auth.userDetailsService(userDetailsService());
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
     /**
     *@Description: http-related configuration including login, log out, exception dealing, session management
@@ -86,7 +100,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().and().csrf().disable();
+        // 在 UsernamePasswordAuthenticationFilter 之前添加 JwtAuthenticationTokenFilter
+        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+        httpSecurity.cors().and().csrf().disable().sessionManagement().disable().formLogin().disable()
+                .headers().addHeaderWriter(new StaticHeadersWriter(Arrays.asList(
+                        new Header("Access-control-Allow-Origin","*"),
+                new Header("Access-Control-Expose-Headers","Authorization"))));
+
+
         httpSecurity.authorizeRequests().
                 withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
@@ -104,24 +126,54 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authenticationEntryPoint(customizeAuthenticationEntrypoint). // to deal with anonymous user's access to resources
 
                 // log in
-                and().formLogin().
-                    permitAll().
-                    successHandler(customizeAuthenticationSuccessHandler).
-                    failureHandler(customizeAuthenticationFailureHandler).
+                and().apply(new JwtLoginConfigurer<>()).loginSuccessHandler(customizeAuthenticationSuccessHandler).
 
                 // log out
                 and().logout().
                     permitAll().
                     logoutSuccessHandler(customizeLogoutSuccessHandler).
-                    deleteCookies("JSESSIONID").
+//                    deleteCookies("JSESSIONID").
 
+                and().headers().cacheControl();
                 // session policy
-                and().sessionManagement().
-                        maximumSessions(1).
-                        expiredSessionStrategy(customizeSessionInformationExpiredStrategy);
+//                and().sessionManagement().
+//                        maximumSessions(1).
+//                        expiredSessionStrategy(customizeSessionInformationExpiredStrategy);
 
-                httpSecurity.addFilterBefore(customizeAbstractSecurityInterceptor, FilterSecurityInterceptor.class);
+
+        httpSecurity.addFilterBefore(customizeAbstractSecurityInterceptor, FilterSecurityInterceptor.class);
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity.authorizeRequests();
+        //让Spring security 放行所有preflight request（cors 预检请求）
+        registry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+        // 处理异常情况：认证失败和权限不足
+        httpSecurity.exceptionHandling().authenticationEntryPoint(customizeAuthenticationEntrypoint);
     }
 
 
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+
+    @Bean("daoAuthenticationProvider")
+    protected AuthenticationProvider daoAuthenticationProvider() throws Exception{
+        //这里使用BCryptPasswordEncoder比对加密后的密码，注意要跟createUser时保持一致
+        DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+        daoProvider.setPasswordEncoder(passwordEncoder());
+        daoProvider.setUserDetailsService(userDetailsService());
+        return daoProvider;
+    }
+
+    @Bean
+    public CorsFilter corsFilter(){
+        UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowCredentials(true);
+        cors.addAllowedOrigin("*");
+        cors.addAllowedHeader("*");
+        cors.addAllowedMethod("*");
+        configurationSource.registerCorsConfiguration("/**", cors);
+        return new CorsFilter(configurationSource);
+    }
 }

@@ -56,7 +56,7 @@ public class CustomizeAbstractSecurityInterceptor extends AbstractSecurityInterc
     public void invoke(FilterInvocation fi) throws IOException, ServletException {
         // fi pass an url to deal with
         // invoke the MyInvocationSecurityMetadataSource.getAttributes(Object object) to get all the url list
-        //Then use MyAccessDecisionManager.decide() to verify whether has the access
+        // Then use MyAccessDecisionManager.decide() to verify whether has the access
         InterceptorStatusToken token = super.beforeInvocation(fi);
         try {
             // do next filter

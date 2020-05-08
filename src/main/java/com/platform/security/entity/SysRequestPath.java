@@ -14,6 +14,17 @@ import java.io.Serializable;
  */
 public class SysRequestPath implements Serializable {
 
+    public SysRequestPath(Integer id, String url, String description) {
+        this.id = id;
+        this.url = url;
+        this.description = description;
+    }
+
+    public SysRequestPath(String url, String description) {
+        this.url = url;
+        this.description = description;
+    }
+
     private static final long serialVersionUID=1L;
 
     /**

@@ -2,6 +2,8 @@ package com.platform.security.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,17 @@ import java.io.Serializable;
  * @since 2020-04-23
  */
 public class SysPermission implements Serializable {
+
+    public SysPermission(Integer id, String permissionCode, String permissionName) {
+        this.id = id;
+        this.permissionCode = permissionCode;
+        this.permissionName = permissionName;
+    }
+
+    public SysPermission(String permissionCode, String permissionName) {
+        this.permissionCode = permissionCode;
+        this.permissionName = permissionName;
+    }
 
     private static final long serialVersionUID=1L;
 
@@ -31,7 +44,6 @@ public class SysPermission implements Serializable {
      * 权限名
      */
     private String permissionName;
-
 
     public Integer getId() {
         return id;

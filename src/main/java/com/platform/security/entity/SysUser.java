@@ -6,9 +6,13 @@ package com.platform.security.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -18,7 +22,35 @@ import java.util.Date;
  * @author code maker
  * @since 2020-04-23
  */
+@Data
 public class SysUser implements Serializable {
+
+
+    public SysUser(String account, String userName, String rawPassword) {
+        setAccount(account);
+        setUserName(userName);
+        setPassword(rawPassword);
+        setCreateTime(LocalDateTime.now());
+        setUpdateTime(LocalDateTime.now());
+    }
+
+    public SysUser(String account, String userName, String rawPassword, List<String> status) {
+        setAccount(account);
+        setUserName(userName);
+        setPassword(rawPassword);
+        setCreateTime(LocalDateTime.now());
+        setUpdateTime(LocalDateTime.now());
+        setAccountNonExpired(false);
+        setCredentialsNonExpired(false);
+        setAccountNonLocked(false);
+        setEnabled(false);
+        for (String s: status) {
+            if (s.equals("accountNonExpired")) setAccountNonExpired(true);
+            if (s.equals("accountNonLocked")) setAccountNonLocked(true);
+            if (s.equals("credentialsNonExpired")) setCredentialsNonExpired(true);
+            if (s.equals("enabled")) setEnabled(true);
+        }
+    }
 
     private static final long serialVersionUID=1L;
 
@@ -84,6 +116,22 @@ public class SysUser implements Serializable {
      * 修改人
      */
     private Integer updateUser;
+
+    public SysUser(Integer id, String account, String userName, String password, LocalDateTime lastLoginTime, Boolean enabled, Boolean accountNonExpired, Boolean accountNonLocked, Boolean credentialsNonExpired, LocalDateTime createTime, LocalDateTime updateTime, Integer createUser, Integer updateUser) {
+        this.id = id;
+        this.account = account;
+        this.userName = userName;
+        this.password = password;
+        this.lastLoginTime = lastLoginTime;
+        this.enabled = enabled;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.createUser = createUser;
+        this.updateUser = updateUser;
+    }
 
 
     public Integer getId() {

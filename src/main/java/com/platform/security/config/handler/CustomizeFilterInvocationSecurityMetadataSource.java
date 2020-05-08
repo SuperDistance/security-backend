@@ -45,33 +45,22 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         // to get the urls
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
-        System.out.println("\nlist of urls: \n" + requestUrl);
-        // find out the permission list of one specific api/url
-        // find out the first part of url like /xxx in /xxx/yyy
-//        String save = requestUrl;
-//        if (requestUrl.contains("?")) {
-//            requestUrl = requestUrl.split("\\?")[0];
-//        }
-//        requestUrl = "/" + requestUrl.split("/")[1];
-//        System.out.println("\ntrimming : \n" + requestUrl);
-
-        // requestUrl = save;
-
+        System.out.println("\nthe url to authorize: \n" + requestUrl);
         List<SysPermission> permissionList = sysPermissionService.selectListByPath(requestUrl);
-        System.out.println("\ntrusted api for this user: \n" + permissionList);
+        System.out.println("\nall permissions contains this url: \n" + permissionList);
         if ("/login".equals(requestUrl)) {
             return null;
         }
         else if(permissionList == null || permissionList.size() == 0) {
-            // when there is no rules in database about this url, then it is open to all
+            // when there is no rules in database about this url, then it is open to alli
             return null;
         }
         String[] attributes = new String[permissionList.size()];
         for (int i = 0; i < permissionList.size(); i++) {
             attributes[i] = permissionList.get(i).getPermissionCode();
-            System.out.println("attributes" + i + ": " + attributes[0]);
+            System.out.println("permission attributes " + i + ": " + attributes[i]);
         }
-        System.out.println("Answer" + SecurityConfig.createList(attributes));
+        System.out.println("permissions: " + SecurityConfig.createList(attributes));
         return SecurityConfig.createList(attributes);
     }
 

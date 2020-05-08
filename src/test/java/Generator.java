@@ -8,13 +8,13 @@
  * @Date created at 4:43 PM
  */
 
-import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public class Generator {
             //3、策略配置
             StrategyConfig strategyConfig = new StrategyConfig();
             strategyConfig.setCapitalMode(true)//开启全局大写命名
-                    .setDbColumnUnderline(true)//表名字段名使用下划线
+                    // .setDbColumnUnderline(true)//表名字段名使用下划线
                     .setNaming(NamingStrategy.underline_to_camel)//下划线到驼峰的命名方式
                     .setTablePrefix("sys_")//表名前缀
                     .setEntityLombokModel(true)//使用lombok

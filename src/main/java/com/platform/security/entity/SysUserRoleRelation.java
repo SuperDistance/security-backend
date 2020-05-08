@@ -14,6 +14,17 @@ import java.io.Serializable;
  */
 public class SysUserRoleRelation implements Serializable {
 
+    public SysUserRoleRelation(Integer userId, Integer roleId) {
+        this.userId = userId;
+        this.roleId = roleId;
+    }
+
+    public SysUserRoleRelation(Integer id, Integer userId, Integer roleId) {
+        this.id = id;
+        this.userId = userId;
+        this.roleId = roleId;
+    }
+
     private static final long serialVersionUID=1L;
 
     /**
@@ -31,7 +42,6 @@ public class SysUserRoleRelation implements Serializable {
      * 角色id
      */
     private Integer roleId;
-
 
     public Integer getId() {
         return id;
