@@ -2,13 +2,14 @@
  * Copyright (c) 2020
  */
 
-package com.platform.security.config.handler;
+package com.platform.security.config.access;
 /**
  * @Author: Tianshi Chen
  * @Description:
  * @Date created at 12:25 AM
  */
 
+import com.platform.security.config.access.CustomizeAccessDecisionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 
 /**
  *@program: security-backend

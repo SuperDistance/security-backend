@@ -5,7 +5,15 @@
  */
 package com.platform.security.config;
 
-import com.platform.security.config.handler.*;
+import com.platform.security.config.access.CustomizeAbstractSecurityInterceptor;
+import com.platform.security.config.access.CustomizeAccessDecisionManager;
+import com.platform.security.config.access.CustomizeAccessDeniedHandler;
+import com.platform.security.config.access.CustomizeFilterInvocationSecurityMetadataSource;
+import com.platform.security.config.jwt.*;
+import com.platform.security.config.login.CustomizeAuthenticationFailureHandler;
+import com.platform.security.config.login.CustomizeAuthenticationSuccessHandler;
+import com.platform.security.config.login.CustomizeLogoutSuccessHandler;
+import com.platform.security.config.login.JwtLoginConfigurer;
 import com.platform.security.config.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -106,12 +114,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 在 UsernamePasswordAuthenticationFilter 之前添加 JwtAuthenticationTokenFilter
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
+        // JWT (eg. login refused, invalid)
+
         httpSecurity.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().formLogin().disable()
                 .headers().addHeaderWriter(new StaticHeadersWriter(Arrays.asList(
                         new Header("Access-control-Allow-Origin","*"),
                 new Header("Access-Control-Expose-Headers","Authorization"))));
-
 
         httpSecurity.authorizeRequests().
                 withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -125,10 +134,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }).
 
-                // exceptions dealing(eg. login refused, invalid)
-                and().exceptionHandling().
-                authenticationEntryPoint(customizeAuthenticationEntrypoint). // to deal with anonymous user's access to resources
-
                 // log in
                 and().apply(new JwtLoginConfigurer<>()).loginSuccessHandler(customizeAuthenticationSuccessHandler).
 
@@ -139,10 +144,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    deleteCookies("JSESSIONID").
 
                 and().headers().cacheControl();
-                // session policy
-//                and().sessionManagement().
-//                        maximumSessions(1).
-//                        expiredSessionStrategy(customizeSessionInformationExpiredStrategy);
 
 
         httpSecurity.addFilterBefore(customizeAbstractSecurityInterceptor, FilterSecurityInterceptor.class);
@@ -150,9 +151,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //让Spring security 放行所有preflight request（cors 预检请求）
         registry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
         // 处理异常情况：认证失败和权限不足
+        // exceptions dealing(eg. login refused, invalid)
+        // to deal with anonymous user's access to resources
         httpSecurity.exceptionHandling().
-                accessDeniedHandler(customizeAccessDeniedHandler).
-                authenticationEntryPoint(customizeAuthenticationEntrypoint);
+                authenticationEntryPoint(customizeAuthenticationEntrypoint).
+                accessDeniedHandler(customizeAccessDeniedHandler);
     }
 
 

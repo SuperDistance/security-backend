@@ -2,7 +2,7 @@
  * Copyright (c) 2020
  */
 
-package com.platform.security.config.handler;
+package com.platform.security.config.access;
 /**
  * @Author: Tianshi Chen
  * @Description:

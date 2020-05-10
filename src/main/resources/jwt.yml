@@ -1,4 +1,0 @@
-jwt:
-  secret:aaabbbcccdddeeefffggghhhiiijjjkkklllmmmnnnooopppqqqrrrsssttt
-  expiration: 300
-  header: Authorization

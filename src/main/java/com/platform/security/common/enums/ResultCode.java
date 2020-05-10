@@ -41,9 +41,10 @@ public enum ResultCode {
     DELETE_ERROR(3003, "internal delete error"),
 
     /* 登陆状态错误 */
-    JWT_EXPIRED(4000, "login status expired"),
-    JWT_ERROR(4001, "JWT token error"),
-    JWT_EMPTY(4002, "JWT empty");
+    JWT_EXPIRED(4000, "Login expired"),
+    JWT_ERROR(4001, "JWT format error"),
+    JWT_EMPTY(4002, "JWT empty"),
+    JWT_VALIDATE_FAIL(4003, "JWT signature invalid");
 
     private Integer code;
     private String message;

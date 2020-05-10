@@ -3,14 +3,14 @@
  */
 package com.platform.security.common.utils;
 import com.platform.security.entity.SysUser;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,14 +59,15 @@ public class JwtTokenUtil {
      * @param token 令牌
      * @return 数据声明
      */
-    private Claims getClaimsFromToken(String token) {
+    private Claims getClaimsFromToken(String token) throws UnsupportedJwtException, MalformedJwtException, SignatureException, ExpiredJwtException, IllegalArgumentException{
         Claims claims;
         try {
             System.out.println("token" + token);
             token = token.split(" ")[1];
             claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        } catch (Exception e) {
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | ExpiredJwtException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             claims = null;
+            throw e;
         }
         return claims;
     }
@@ -91,13 +92,17 @@ public class JwtTokenUtil {
      * @param token 令牌
      * @return 用户名
      */
-    public String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) throws UnsupportedJwtException, MalformedJwtException, SignatureException, ExpiredJwtException, IllegalArgumentException{
         String username;
         try {
-            Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
-        } catch (Exception e) {
+            if (token == null) { throw new IllegalArgumentException(); }
+            else {
+                Claims claims = getClaimsFromToken(token);
+                username = claims.getSubject();
+            }
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | ExpiredJwtException | IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             username = null;
+            throw e;
         }
         return username;
     }
@@ -172,7 +177,13 @@ public class JwtTokenUtil {
 //        return tokenPrefix;
 //    }
 
-    public static int getTokenRefreshInterval() {
+    private static int getTokenRefreshInterval() {
         return tokenRefreshInterval;
+    }
+
+    public boolean shouldTokenRefresh(Date issueAt){
+        LocalDateTime issueTime = LocalDateTime.ofInstant(issueAt.toInstant(), ZoneId.systemDefault());
+        System.out.println("Interval to refresh token: " + LocalDateTime.now().plusSeconds(JwtTokenUtil.getTokenRefreshInterval()));
+        return LocalDateTime.now().plusSeconds(JwtTokenUtil.getTokenRefreshInterval()).isAfter(issueTime);
     }
 }
