@@ -9,7 +9,11 @@ package com.platform.security.config.handler;
  * @Date created at 6:03 PM
  */
 
+import com.alibaba.fastjson.JSON;
+import com.platform.security.common.entity.JsonResult;
+import com.platform.security.common.enums.ResultCode;
 import com.platform.security.common.utils.JwtTokenUtil;
+import com.platform.security.common.utils.ResultTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -19,6 +23,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -52,7 +57,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         AuthenticationException failed = null;
 
-        try {
             String token = httpServletRequest.getHeader(jwtTokenUtil.getHeader());
             String username = null;
             if (!StringUtils.isEmpty(token)) {
@@ -60,7 +64,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                     System.out.println("now the userDetails is" + userDetails);
-
+                    String userName = userDetails.getUsername();
+                    if (userName == null) {
+                        throw new UsernameNotFoundException("User: " + username + " not exist!");
+                    }
                     if (jwtTokenUtil.validateToken(token, userDetails)) {
                         // refresh
                         boolean shouldRefresh = shouldTokenRefresh(jwtTokenUtil.issuedAt(token));
@@ -75,28 +82,28 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                         // save authentication into ThreadLocal，to use later
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
-                    else throw new BadCredentialsException ("validate failed");
+                    else {
+                        JsonResult jsonResult = ResultTool.fail(ResultCode.JWT_EXPIRED);
+                        httpServletResponse.setContentType("text/json;charset=utf-8");
+                        httpServletResponse.getWriter().write(JSON.toJSONString(jsonResult));
+                        throw new BadCredentialsException ("validate failed");
+                    }
+                }
+                else {
+                    JsonResult jsonResult = ResultTool.fail(ResultCode.JWT_ERROR);
+                    httpServletResponse.setContentType("text/json;charset=utf-8");
+                    httpServletResponse.getWriter().write(JSON.toJSONString(jsonResult));
+                    throw new InternalAuthenticationServiceException("JWT ERROR!");
                 }
             }
             else {  //如果token长度为0
+                JsonResult jsonResult = ResultTool.fail(ResultCode.JWT_EMPTY);
+                httpServletResponse.setContentType("text/json;charset=utf-8");
+                httpServletResponse.getWriter().write(JSON.toJSONString(jsonResult));
                 throw new InsufficientAuthenticationException("JWT is Empty");
             }
             System.out.println("now the token is " + token);
             System.out.println("now the username is " + username);
-        }
-        catch (InsufficientAuthenticationException e) {
-            logger.error(e);
-        }
-        catch (InternalAuthenticationServiceException e) {
-            logger.error(
-                    "An internal error occurred while trying to authenticate the user.",
-                    failed);
-            failed = e;
-        } catch (BadCredentialsException e) {
-            // Authentication failed
-            logger.error(
-                    "JWT token verify fail or Token expires", e);
-        }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 

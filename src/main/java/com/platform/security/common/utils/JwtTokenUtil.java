@@ -153,7 +153,14 @@ public class JwtTokenUtil {
      * @return 是否有效
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
-        String username = getUsernameFromToken(token);
+        String username = null;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            username = claims.getSubject();
+        } catch (Exception e) {
+            return false;
+        }
+
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 

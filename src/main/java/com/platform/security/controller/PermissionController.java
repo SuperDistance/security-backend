@@ -11,9 +11,7 @@ package com.platform.security.controller;/**
 import com.platform.security.common.entity.JsonResult;
 import com.platform.security.common.utils.ResultTool;
 import com.platform.security.entity.SysPermission;
-import com.platform.security.entity.SysRole;
 import com.platform.security.service.SysPermissionService;
-import com.platform.security.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;

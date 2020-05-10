@@ -38,7 +38,12 @@ public enum ResultCode {
     NO_PERMISSION(3001, "have no access"),
     UPDATE_ERROR(3002, "internal update error"),
     SAVE_ERROR(3002, "internal save error"),
-    DELETE_ERROR(3003, "internal delete error");
+    DELETE_ERROR(3003, "internal delete error"),
+
+    /* 登陆状态错误 */
+    JWT_EXPIRED(4000, "login status expired"),
+    JWT_ERROR(4001, "JWT token error"),
+    JWT_EMPTY(4002, "JWT empty");
 
     private Integer code;
     private String message;

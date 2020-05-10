@@ -73,6 +73,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CustomizeFilterInvocationSecurityMetadataSource customizeFilterInvocationSecurityMetadataSource;
 
     @Autowired
+    CustomizeAccessDeniedHandler customizeAccessDeniedHandler;
+
+    @Autowired
     private CustomizeAbstractSecurityInterceptor customizeAbstractSecurityInterceptor;
 
     // offer an default encrypt method
@@ -103,7 +106,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 在 UsernamePasswordAuthenticationFilter 之前添加 JwtAuthenticationTokenFilter
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.cors().and().csrf().disable().sessionManagement().disable().formLogin().disable()
+        httpSecurity.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().formLogin().disable()
                 .headers().addHeaderWriter(new StaticHeadersWriter(Arrays.asList(
                         new Header("Access-control-Allow-Origin","*"),
                 new Header("Access-Control-Expose-Headers","Authorization"))));
@@ -146,7 +150,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //让Spring security 放行所有preflight request（cors 预检请求）
         registry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
         // 处理异常情况：认证失败和权限不足
-        httpSecurity.exceptionHandling().authenticationEntryPoint(customizeAuthenticationEntrypoint);
+        httpSecurity.exceptionHandling().
+                accessDeniedHandler(customizeAccessDeniedHandler).
+                authenticationEntryPoint(customizeAuthenticationEntrypoint);
     }
 
 

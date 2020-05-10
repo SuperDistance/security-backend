@@ -27,6 +27,12 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     @Autowired
     private SysRoleService sysRoleService;
+
+    @GetMapping("/rolelist")
+    public JsonResult getRole () {
+        return ResultTool.success(sysRoleService.list());
+    }
+
     @GetMapping("/role")
     public JsonResult getRoleList () {
         return ResultTool.success(sysRoleService.list());

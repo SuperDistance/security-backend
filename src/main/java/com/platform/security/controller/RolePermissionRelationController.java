@@ -9,9 +9,7 @@ package com.platform.security.controller;/**
  */
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.platform.security.common.entity.JsonResult;
 import com.platform.security.common.utils.ResultTool;
 import com.platform.security.entity.SysRolePermissionRelation;
@@ -21,7 +19,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

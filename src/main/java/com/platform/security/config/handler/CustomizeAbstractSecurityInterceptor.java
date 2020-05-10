@@ -2,7 +2,8 @@
  * Copyright (c) 2020
  */
 
-package com.platform.security.config.handler;/**
+package com.platform.security.config.handler;
+/**
  * @Author: Tianshi Chen
  * @Description:
  * @Date created at 12:25 AM
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 /**
  *@program: security-backend
@@ -47,10 +49,18 @@ public class CustomizeAbstractSecurityInterceptor extends AbstractSecurityInterc
     }
 
     @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
     public void doFilter (ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         FilterInvocation fi = new FilterInvocation(servletRequest, servletResponse, filterChain);
         invoke(fi);
+    }
+
+    @Override
+    public void destroy() {
     }
 
     public void invoke(FilterInvocation fi) throws IOException, ServletException {
@@ -61,7 +71,8 @@ public class CustomizeAbstractSecurityInterceptor extends AbstractSecurityInterc
         try {
             // do next filter
             fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
-        } finally {
+        }
+        finally {
             super.afterInvocation(token, null);
         }
     }

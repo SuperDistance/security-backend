@@ -57,6 +57,7 @@ public class CustomizeAuthenticationFailureHandler implements AuthenticationFail
             // other errors
             result = ResultTool.fail(ResultCode.COMMON_FAIL);
         }
+        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         // character setting
         httpServletResponse.setContentType("text/json;charset=utf-8");
         //put into HttpServletResponse return to frontend
